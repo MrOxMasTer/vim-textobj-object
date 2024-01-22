@@ -74,13 +74,12 @@ call textobj#user#plugin('object', {
 \     'sfile': expand('<sfile>:p'),
 \     'select-i': 'ik',
 \     'select-a': 'ak',
+\     'select-i-function': 's:elect_key_i',
+\     'select-a-function': 's:select_key_a',
 \   },
 \})
+
 " const s:newRegex = '.*:[a-zA-Z0-9а-яА-ЯЁё\s{}]*[\s,]?\n/'
-
-
-" \     'select-i-function': 's:elect_key_i',
-" \     'select-a-function': 's:select_key_a',
 
 
 
