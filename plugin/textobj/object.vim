@@ -4,16 +4,27 @@ endif
 
 let g:loaded_textobj_object = 1
 
-call textobj#user#plugin('object', {
-\   '*sfile*': expand('<sfile>:p'),
-\	  'key': {
-\     'select-i': 'ik',
-\     'select-a': 'ak',
-\     '*select-i-function*': 's:elect_key_i',
-\     '*select-a-function*': 's:select_key_a',
-\   },
-\})
-" const s:newRegex = '.*:[a-zA-Z0-9а-яА-ЯЁё\s{}]*[\s,]?\n/'
+let s:splitter_map = {
+\    'vim'        : ':',
+\    'javascript' : ':',
+\    'javascript.jsx' : ':',
+\    'json'       : ':',
+\    'coffee'     : ':',
+\    'python'     : ':',
+\    'perl'       : '=>',
+\    'lua'        : '=',
+\    'default'    : '='
+\}
+
+function! s:get_splitter()
+    let ft = &filetype
+
+    if has_key(s:splitter_map, ft)
+        return s:splitter_map[ft]
+    endif
+
+    return s:splitter_map['default']
+endfunction
 
 function! s:select_key_i()
 "    let save_pos = getpos(".")
@@ -37,8 +48,8 @@ function! s:select_key_i()
     " let [b, e] = [c, c]
     " call search('["' .. "']" .. "\\s*" .. splitter)
     " normal! h
-    " let e = getpos('.')
-  return ['v', 1, 2]
+    let e = getpos('.')
+  return ['v', e, e]
 endfunction
 
 function! s:select_key_a()  "{{{2
@@ -58,26 +69,19 @@ function! s:select_key_a()  "{{{2
   return ['v', b, e]
 endfunction
 
-let s:splitter_map = {
-\    'vim'        : ':',
-\    'javascript' : ':',
-\    'javascript.jsx' : ':',
-\    'json'       : ':',
-\    'coffee'     : ':',
-\    'python'     : ':',
-\    'perl'       : '=>',
-\    'lua'        : '=',
-\    'default'    : '='
-\}
+call textobj#user#plugin('object', {
+\   'sfile': expand('<sfile>:p'),
+\	  'key': {
+\     'select-i': 'ik',
+\     'select-a': 'ak',
+\     'select-i-function': 's:elect_key_i',
+\     'select-a-function': 's:select_key_a',
+\   },
+\})
+" const s:newRegex = '.*:[a-zA-Z0-9а-яА-ЯЁё\s{}]*[\s,]?\n/'
 
-function! s:get_splitter()
-    let ft = &filetype
 
-    if has_key(s:splitter_map, ft)
-        return s:splitter_map[ft]
-    endif
 
-    return s:splitter_map['default']
-endfunction
+
 
 
